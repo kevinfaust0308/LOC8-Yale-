@@ -26,36 +26,21 @@ public class PasswordRequestDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         mAuth = FirebaseAuth.getInstance();
-
         final View v = LayoutInflater.from(getActivity()).inflate(R.layout.password_request_popup, null);
         final EditText e = (EditText) v.findViewById(R.id.resetEmail);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(v);
         builder.setMessage("Password Reset")
                 .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // send password reset
                         String email = e.getText().toString();
 
                         if (!TextUtils.isEmpty(email)) {
                             mAuth.sendPasswordResetEmail(email);
-                        } else {
-                            Toast.makeText(getActivity(), "Please enter email", Toast.LENGTH_SHORT).show();
                         }
-
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                        dismiss();
                     }
                 });
-        // Create the AlertDialog object and return it
         return builder.create();
-
     }
 }

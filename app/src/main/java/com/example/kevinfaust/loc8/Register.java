@@ -52,7 +52,6 @@ public class Register extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private StorageReference mStorageRef;
 
-    private ProgressDialog mProgressDialog;
     private Uri mImageUri = null;
 
     @Override
@@ -63,7 +62,6 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        mProgressDialog = new ProgressDialog(this);
     }
 
     @OnClick(R.id.register_btn)
@@ -87,52 +85,29 @@ public class Register extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(name) && password.length() > 5 && password.equals(confirm_password) && mImageUri != null) {
 
-            mProgressDialog.setMessage("Setting your account up");
-            mProgressDialog.show();
 
-            // log user in
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    Log.d(TAG, "account creation completed");
-
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "account creation completed successfully");
-
-                        // user registered
-
-                        // create new entry in database with user's data: name, email, location, profile picture, list of your friends
-
                         StorageReference filepath = mStorageRef.child("ProfilePictures").child(mImageUri.getLastPathSegment());
                         filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Log.d(TAG, "file uploaded successfully");
-
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
-                                String user_id = mAuth.getCurrentUser().getUid(); //unique id of registered user
-
-                                //new child node with user's unique id as key
+                                String user_id = mAuth.getCurrentUser().getUid();
                                 DatabaseReference currentUserDb = mDatabaseRef.child("UserData").child(user_id);
                                 currentUserDb.child("name").setValue(name);
                                 currentUserDb.child("email").setValue(email);
                                 currentUserDb.child("pictureUrl").setValue(downloadUrl.toString());
                                 currentUserDb.child("online").setValue(true);
                                 currentUserDb.child("statusMsg").setValue("Hi I'm " + name + "!");
-
-                                // list of all our friends. master account is default friend
-                                /*Map<String, String> friends = new HashMap<>();
-                                friends.add("master@master.com");*/
                                 currentUserDb.child("friends").push().setValue("master@master.com");
-
-                                // hardcoded location values to yale
                                 currentUserDb.child("latitude").setValue("43.130026");
                                 currentUserDb.child("longitude").setValue("-82.798263");
 
-                                mProgressDialog.dismiss();
                                 // user logged in
                                 Intent loginIntent = new Intent(Register.this, MainActivity.class);
                                 startActivity(loginIntent);
@@ -141,21 +116,11 @@ public class Register extends AppCompatActivity {
 
 
                         });
-                    } else {
-                        Toast.makeText(Register.this, "Error signing up", Toast.LENGTH_LONG).show();
-                        mProgressDialog.dismiss();
                     }
-                    ;
-
                 }
             });
 
-
-        } else {
-            Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     @Override

@@ -10,9 +10,6 @@
     tools:context="com.example.kevinfaust.loc8.Register">
 
     <LinearLayout
-        android:background="@drawable/dark_gradient"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,12 +22,10 @@
             android:src="@drawable/logo"/>
 
         <TextView
-            android:textColor="@color/md_white_1000"
             android:layout_gravity="center_horizontal"
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-15dp"
             android:text="Choose a profile picture"/>
 
         <ImageButton
@@ -44,9 +39,6 @@
             android:layout_marginTop="11dp" />
 
         <EditText
-            android:textColorHint="@color/md_white_1000"
-            android:textColor="@color/md_white_1000"
-            android:layout_marginTop="5dp"
             android:id="@+id/name_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,8 +49,6 @@
 
         <EditText
             android:drawableTint="@color/md_white_1000"
-            android:textColorHint="@color/md_white_1000"
-            android:textColor="@color/md_white_1000"
             android:drawableRight="@drawable/mail"
             android:id="@+id/email_field"
             android:layout_width="match_parent"
@@ -71,8 +61,6 @@
 
         <EditText
             android:drawableTint="@color/md_white_1000"
-            android:textColorHint="@color/md_white_1000"
-            android:textColor="@color/md_white_1000"
             android:drawableRight="@drawable/padlock"
             android:id="@+id/password_field"
             android:layout_width="match_parent"
@@ -85,8 +73,6 @@
 
         <EditText
             android:drawableTint="@color/md_white_1000"
-            android:textColorHint="@color/md_white_1000"
-            android:textColor="@color/md_white_1000"
             android:drawableRight="@drawable/padlock"
             android:id="@+id/confirm_password_field"
             android:layout_width="match_parent"
@@ -100,7 +86,6 @@
 
         <Button
             android:layout_marginTop="12dp"
-            android:textStyle="bold"
             android:textColor="#ffffffff"
             android:background="@color/md_teal_200"
             android:id="@+id/register_btn"
